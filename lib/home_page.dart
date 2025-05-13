@@ -1,0 +1,198 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:joy_a_more/models/banner_data.dart';
+import 'package:joy_a_more/models/categories_data.dart';
+import 'package:joy_a_more/models/suggested_product_list.dart';
+import 'package:joy_a_more/widgets/account_page.dart';
+import 'package:joy_a_more/widgets/category_page.dart';
+import 'package:joy_a_more/widgets/suggested_product_grid.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _currentIndex = 0;
+  final PageController _pageController = PageController();
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (_pageController.hasClients) {
+        final nextPage = (_pageController.page!.round() + 1) % bannerImages.length;
+        _pageController.animateToPage(
+          nextPage,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: _buildAppBar(),
+      body: _pages[_currentIndex],
+      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      backgroundColor: Colors.white,
+      elevation: 0,
+      title: Row(
+        children: [
+          const Icon(Icons.location_on, color: Colors.black),
+          const SizedBox(width: 5),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text('Gonda, UP', style: TextStyle(color: Colors.black, fontSize: 16)),
+              Text('271302 >', style: TextStyle(color: Colors.black, fontSize: 14, fontStyle: FontStyle.italic)),
+            ],
+          ),
+        ],
+      ),
+      actions: const [
+        Icon(Icons.favorite_border, color: Colors.black),
+        SizedBox(width: 10),
+        Icon(Icons.shopping_cart_outlined, color: Colors.black),
+        SizedBox(width: 10),
+      ],
+    );
+  }
+
+  Widget _buildHomeContent() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _buildSearchBar(),
+          const SizedBox(height: 15),
+          _buildCategoryList(),
+          const SizedBox(height: 10),
+          _buildBannerSlider(),
+          SuggestedProductGrid(products: suggestedProducts),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      child: TextField(
+        decoration: InputDecoration(
+          hintText: "Personalised Phot...",
+          prefixIcon: const Icon(Icons.search),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryList() {
+    final int half = (categories.length / 2).ceil();
+    return SizedBox(
+      height: 220,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: List.generate(half, (index) {
+            final top = categories[index];
+            final bottom = (index + half < categories.length) ? categories[index + half] : null;
+
+            return Container(
+              width: 90,
+              margin: const EdgeInsets.symmetric(horizontal: 6),
+              child: Column(
+                children: [
+                  _buildCategoryItem(top),
+                  const SizedBox(height: 20),
+                  if (bottom != null) _buildCategoryItem(bottom),
+                ],
+              ),
+            );
+          }),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryItem(Map<String, String> cat) {
+    return Column(
+      children: [
+        CircleAvatar(
+          radius: 25,
+          backgroundImage: AssetImage(cat['icon']!),
+        ),
+        const SizedBox(height: 5),
+        Text(
+          cat['label']!,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 12),
+          maxLines: 2,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBannerSlider() {
+    return SizedBox(
+      height: 200,
+      width: double.infinity,
+      child: PageView.builder(
+        controller: _pageController,
+        itemCount: bannerImages.length,
+        itemBuilder: (context, index) {
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                image: AssetImage(bannerImages[index]),
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      currentIndex: _currentIndex,
+      selectedItemColor: Colors.green,
+      unselectedItemColor: Colors.grey,
+      type: BottomNavigationBarType.fixed,
+      onTap: (index) => setState(() => _currentIndex = index),
+      items: const [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+        BottomNavigationBarItem(icon: Icon(Icons.flash_on), label: 'Category'),
+        BottomNavigationBarItem(icon: Icon(Icons.card_giftcard), label: 'All Gifts'),
+        BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Account'),
+      ],
+    );
+  }
+
+  List<Widget> get _pages => [
+    _buildHomeContent(),
+    CategoryPage(),
+    const Center(child: Text("All Gifts Page")),
+    AccountPage(),
+  ];
+}

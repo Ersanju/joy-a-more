@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:joy_a_more/widgets/home_page.dart';
+import 'package:joy_a_more/home_page.dart';
 
 void main() {
   runApp(const MyApp());
