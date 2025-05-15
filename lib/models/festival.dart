@@ -1,5 +1,10 @@
-final List<Map<String, String>> popularItems =[
+final List<Map<String, String>> festival =[
 
+  {"title":"Lego Blocks", "imagePath":"assets/kids/lego_blocks.png"},
+  {"title":"Doll House", "imagePath":"assets/kids/doll_house.png"},
+  {"title":"Toy Train", "imagePath":"assets/kids/toy_train.png"},
+  {"title":"Puzzle Set", "imagePath":"assets/kids/puzzle_set.png"},
+  {"title":"Action Figure", "imagePath":"assets/kids/action_figure.png"},
   {"title":"Toy Robot", "imagePath":"assets/kids/toy_robot.png"},
   {"title":"Board Game", "imagePath":"assets/kids/board_game.png"},
   {"title":"Stuffed Animal", "imagePath":"assets/kids/stuffed_animal.jpeg"},
@@ -15,9 +20,6 @@ final List<Map<String, String>> popularItems =[
   {"title":"Toy Robot", "imagePath":"assets/kids/toy_robot.png"},
   {"title":"Board Game", "imagePath":"assets/kids/board_game.png"},
   {"title":"Stuffed Animal", "imagePath":"assets/kids/stuffed_animal.jpeg"},
-  {"title":"Toy Robot", "imagePath":"assets/kids/toy_robot.png"},
-  {"title":"Board Game", "imagePath":"assets/kids/board_game.png"},
-  {"title":"Stuffed Animal", "imagePath":"assets/kids/stuffed_animal.jpeg"},
   {"title":"Smokey Bear", "imagePath":"assets/kids/smokey_bear.png"},
   {"title":"Racing Car", "imagePath":"assets/kids/racing_car.png"},
   {"title":"Monster Truck", "imagePath":"assets/kids/monster_truck.png"},
@@ -30,4 +32,8 @@ final List<Map<String, String>> popularItems =[
   {"title":"Toy Robot", "imagePath":"assets/kids/toy_robot.png"},
   {"title":"Board Game", "imagePath":"assets/kids/board_game.png"},
   {"title":"Stuffed Animal", "imagePath":"assets/kids/stuffed_animal.jpeg"},
+  {"title":"Smokey Bear", "imagePath":"assets/kids/smokey_bear.png"},
+  {"title":"Racing Car", "imagePath":"assets/kids/racing_car.png"},
+  {"title":"Monster Truck", "imagePath":"assets/kids/monster_truck.png"},
+  {"title":"Teddy Bear", "imagePath":"assets/kids/teddy_bear.png"},
 ];

@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:joy_a_more/models/2-hour.dart';
 import 'package:joy_a_more/models/cakes.dart';
+import 'package:joy_a_more/models/celebrations.dart';
+import 'package:joy_a_more/models/festival.dart';
+import 'package:joy_a_more/models/flowers.dart';
+import 'package:joy_a_more/models/gifts.dart';
 import 'package:joy_a_more/models/kids.dart';
+import 'package:joy_a_more/models/personalised.dart';
 import 'package:joy_a_more/models/popular_items.dart';
+import 'package:joy_a_more/models/weddings.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({super.key});
@@ -110,7 +117,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     ),
                   ],
                   if (selectedIndex == 1) ...[
-                    const Text("All Popular",
+                    const Text("Cakes",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
@@ -140,7 +147,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     ),
                   ],
                   if (selectedIndex == 2) ...[
-                    const Text("All Popular",
+                    const Text("Kids",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
@@ -170,7 +177,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     ),
                   ],
                   if (selectedIndex == 3) ...[
-                    const Text("All Popular",
+                    const Text("Gifts",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
@@ -180,7 +187,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         mainAxisSpacing: 12,
                         crossAxisSpacing: 12,
                         childAspectRatio: 0.75,
-                        children: kids
+                        children: gifts
                             .map((item) => Column(
                           children: [
                             Image.asset(item['imagePath']!,
@@ -200,7 +207,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     ),
                   ],
                   if (selectedIndex == 4) ...[
-                    const Text("All Popular",
+                    const Text("Flowers",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
@@ -210,7 +217,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         mainAxisSpacing: 12,
                         crossAxisSpacing: 12,
                         childAspectRatio: 0.75,
-                        children: popularItems
+                        children: flowers
                             .map((item) => Column(
                           children: [
                             Image.asset(item['imagePath']!,
@@ -230,7 +237,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     ),
                   ],
                   if (selectedIndex == 5) ...[
-                    const Text("All Popular",
+                    const Text("Personalised",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
@@ -240,7 +247,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         mainAxisSpacing: 12,
                         crossAxisSpacing: 12,
                         childAspectRatio: 0.75,
-                        children: popularItems
+                        children: personalised
                             .map((item) => Column(
                           children: [
                             Image.asset(item['imagePath']!,
@@ -260,7 +267,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     ),
                   ],
                   if (selectedIndex == 6) ...[
-                    const Text("All Popular",
+                    const Text("Weddings",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
@@ -270,7 +277,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         mainAxisSpacing: 12,
                         crossAxisSpacing: 12,
                         childAspectRatio: 0.75,
-                        children: popularItems
+                        children: weddings
                             .map((item) => Column(
                           children: [
                             Image.asset(item['imagePath']!,
@@ -290,7 +297,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     ),
                   ],
                   if (selectedIndex == 7) ...[
-                    const Text("All Popular",
+                    const Text("Festivals",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
@@ -300,7 +307,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         mainAxisSpacing: 12,
                         crossAxisSpacing: 12,
                         childAspectRatio: 0.75,
-                        children: popularItems
+                        children: festival
                             .map((item) => Column(
                           children: [
                             Image.asset(item['imagePath']!,
@@ -320,7 +327,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     ),
                   ],
                   if (selectedIndex == 8) ...[
-                    const Text("All Popular",
+                    const Text("Celebrations",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
@@ -330,7 +337,37 @@ class _CategoryPageState extends State<CategoryPage> {
                         mainAxisSpacing: 12,
                         crossAxisSpacing: 12,
                         childAspectRatio: 0.75,
-                        children: popularItems
+                        children: celebrations
+                            .map((item) => Column(
+                          children: [
+                            Image.asset(item['imagePath']!,
+                                width: 70, height: 70),
+                            const SizedBox(height: 6),
+                            Text(
+                              item['title']!,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 12),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ))
+                            .toList(),
+                      ),
+                    ),
+                  ],
+                  if (selectedIndex == 9) ...[
+                    const Text("2-Hour delivery",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 12),
+                    Expanded(
+                      child: GridView.count(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 12,
+                        crossAxisSpacing: 12,
+                        childAspectRatio: 0.75,
+                        children: two_hour
                             .map((item) => Column(
                           children: [
                             Image.asset(item['imagePath']!,

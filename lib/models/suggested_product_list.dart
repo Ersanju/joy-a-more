@@ -1,5 +1,3 @@
-
-
 import 'package:joy_a_more/models/suggested_product.dart';
 
 final List<SuggestedProduct> suggestedProducts = [
