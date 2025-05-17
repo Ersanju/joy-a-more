@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:joy_a_more/widgets/account/chat_with_us.dart';
 import 'package:joy_a_more/widgets/account/edit_profile_page.dart';
 
 class AccountPage extends StatelessWidget {
@@ -47,15 +48,47 @@ class AccountPage extends StatelessWidget {
                 mainAxisSpacing: 10,
                 physics: const NeverScrollableScrollPhysics(),
                 childAspectRatio: 2.8,
-                children: const [
+                children: [
                   _AccountButton(
-                      icon: Icons.local_shipping_outlined, label: "My Orders"),
+                    icon: Icons.local_shipping_outlined,
+                    label: "My Orders",
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Text("My Orders Screen")),
+                      );
+                    },
+                  ),
                   _AccountButton(
-                      icon: Icons.notifications_outlined, label: "Reminders"),
+                    icon: Icons.notifications_outlined,
+                    label: "Reminders",
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Text("Reminders Screen")),
+                      );
+                    },
+                  ),
                   _AccountButton(
-                      icon: Icons.chat_bubble_outline, label: "Chat With Us"),
+                    icon: Icons.chat_bubble_outline,
+                    label: "Chat With Us",
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ChatWithUs()),
+                      );
+                    },
+                  ),
                   _AccountButton(
-                      icon: Icons.favorite_border, label: "Wishlist"),
+                    icon: Icons.favorite_border,
+                    label: "Wishlist",
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Text("Wishlist Screen")),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -105,13 +138,14 @@ class AccountPage extends StatelessWidget {
 class _AccountButton extends StatelessWidget {
   final IconData icon;
   final String label;
+  final VoidCallback? onPressed;  // Add this
 
-  const _AccountButton({required this.icon, required this.label});
+  const _AccountButton({required this.icon, required this.label, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-      onPressed: () {},
+      onPressed: onPressed,  // Use the passed callback
       icon: Icon(icon, color: Colors.black),
       label: Text(label, style: const TextStyle(color: Colors.black)),
       style: ElevatedButton.styleFrom(
@@ -126,6 +160,7 @@ class _AccountButton extends StatelessWidget {
     );
   }
 }
+
 
 class _AccountTile extends StatelessWidget {
   final IconData icon;
