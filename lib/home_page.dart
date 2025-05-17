@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:joy_a_more/models/banner_data.dart';
 import 'package:joy_a_more/models/categories_data.dart';
 import 'package:joy_a_more/models/suggested_product_list.dart';
 import 'package:joy_a_more/widgets/account/account_page.dart';
 import 'package:joy_a_more/widgets/all_gifts_page.dart';
 import 'package:joy_a_more/widgets/category_page.dart';
+import 'package:joy_a_more/widgets/home/delivery_location_page.dart';
 import 'package:joy_a_more/widgets/suggested_product_grid.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,13 +22,17 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   final PageController _pageController = PageController();
   Timer? _timer;
+  String _locationText = 'Fetching location...';
+  String _pinCode = '';
 
   @override
   void initState() {
     super.initState();
+    _fetchLocation();
     _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
       if (_pageController.hasClients) {
-        final nextPage = (_pageController.page!.round() + 1) % bannerImages.length;
+        final nextPage =
+            (_pageController.page!.round() + 1) % bannerImages.length;
         _pageController.animateToPage(
           nextPage,
           duration: const Duration(milliseconds: 500),
@@ -33,6 +40,61 @@ class _HomePageState extends State<HomePage> {
         );
       }
     });
+  }
+
+  Future<void> _fetchLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      setState(() {
+        _locationText = 'Location services disabled';
+      });
+      return;
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        setState(() {
+          _locationText = 'Permission denied';
+        });
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      setState(() {
+        _locationText = 'Permission permanently denied';
+      });
+      return;
+    }
+
+    // Get current position
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    // Convert coordinates to address
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+      position.latitude,
+      position.longitude,
+    );
+
+    if (placemarks.isNotEmpty) {
+      final place = placemarks.first;
+      setState(() {
+        _locationText = '${place.locality}, ${place.administrativeArea}';
+        _pinCode = '${place.postalCode}';
+      });
+    } else {
+      setState(() {
+        _locationText = 'Location not found';
+      });
+    }
   }
 
   @override
@@ -57,14 +119,42 @@ class _HomePageState extends State<HomePage> {
       elevation: 0,
       title: Row(
         children: [
-          const Icon(Icons.location_on, color: Colors.black),
-          const SizedBox(width: 5),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text('Gonda, UP', style: TextStyle(color: Colors.black, fontSize: 16)),
-              Text('271301 >', style: TextStyle(color: Colors.black, fontSize: 14, fontStyle: FontStyle.italic)),
-            ],
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const DeliveryLocationPage(),
+                ),
+              );
+            },
+            child: Row(
+              children: [
+                const Icon(Icons.location_on, color: Colors.black),
+                const SizedBox(width: 5),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _locationText,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      _pinCode,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -114,7 +204,10 @@ class _HomePageState extends State<HomePage> {
         child: Row(
           children: List.generate(half, (index) {
             final top = categories[index];
-            final bottom = (index + half < categories.length) ? categories[index + half] : null;
+            final bottom =
+                (index + half < categories.length)
+                    ? categories[index + half]
+                    : null;
 
             return Container(
               width: 90,
@@ -136,10 +229,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildCategoryItem(Map<String, String> cat) {
     return Column(
       children: [
-        CircleAvatar(
-          radius: 25,
-          backgroundImage: AssetImage(cat['icon']!),
-        ),
+        CircleAvatar(radius: 25, backgroundImage: AssetImage(cat['icon']!)),
         const SizedBox(height: 5),
         Text(
           cat['label']!,
@@ -184,8 +274,14 @@ class _HomePageState extends State<HomePage> {
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.flash_on), label: 'Category'),
-        BottomNavigationBarItem(icon: Icon(Icons.card_giftcard), label: 'All Gifts'),
-        BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Account'),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.card_giftcard),
+          label: 'All Gifts',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person_outline),
+          label: 'Account',
+        ),
       ],
     );
   }
