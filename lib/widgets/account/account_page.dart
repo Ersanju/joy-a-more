@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:joy_a_more/widgets/account/edit_profile_page.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -24,7 +25,14 @@ class AccountPage extends StatelessWidget {
               subtitle: const Text('ersanjay426@gmail.com'),
               trailing: IconButton(
                 icon: const Icon(Icons.edit_outlined),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditProfilePage()
+                    ),
+                  );
+                },
               ),
             ),
             const SizedBox(height: 10),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:joy_a_more/models/banner_data.dart';
 import 'package:joy_a_more/models/categories_data.dart';
 import 'package:joy_a_more/models/suggested_product_list.dart';
-import 'package:joy_a_more/widgets/account_page.dart';
+import 'package:joy_a_more/widgets/account/account_page.dart';
 import 'package:joy_a_more/widgets/all_gifts_page.dart';
 import 'package:joy_a_more/widgets/category_page.dart';
 import 'package:joy_a_more/widgets/suggested_product_grid.dart';
