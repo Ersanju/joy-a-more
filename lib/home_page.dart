@@ -4,6 +4,7 @@ import 'package:joy_a_more/models/banner_data.dart';
 import 'package:joy_a_more/models/categories_data.dart';
 import 'package:joy_a_more/models/suggested_product_list.dart';
 import 'package:joy_a_more/widgets/account_page.dart';
+import 'package:joy_a_more/widgets/all_gifts_page.dart';
 import 'package:joy_a_more/widgets/category_page.dart';
 import 'package:joy_a_more/widgets/suggested_product_grid.dart';
 
@@ -62,7 +63,7 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
               Text('Gonda, UP', style: TextStyle(color: Colors.black, fontSize: 16)),
-              Text('271302 >', style: TextStyle(color: Colors.black, fontSize: 14, fontStyle: FontStyle.italic)),
+              Text('271301 >', style: TextStyle(color: Colors.black, fontSize: 14, fontStyle: FontStyle.italic)),
             ],
           ),
         ],
@@ -192,7 +193,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> get _pages => [
     _buildHomeContent(),
     CategoryPage(),
-    const Center(child: Text("All Gifts Page")),
+    AllGiftsPage(),
     AccountPage(),
   ];
 }
